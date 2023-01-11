@@ -62,7 +62,7 @@ passport.use(new GoogleStrategy({
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile);
 
-        User.findOrCreate({username: profile.displayName, googleId: profile.id }, function (err, user) {
+        User.findOrCreate({ username: profile.displayName, googleId: profile.id }, function (err, user) {
             return cb(err, user);
         });
     }
@@ -93,18 +93,18 @@ app.get("/register", function (req, res) {
 });
 
 app.get("/secrets", function (req, res) {
-    User.find({"secret":{$ne: null}}, function(err, foundUsers){
-        if (err){
+    User.find({ "secret": { $ne: null } }, function (err, foundUsers) {
+        if (err) {
             console.log(err);
         } else {
             if (foundUsers) {
-                res.render("secrets", {usersWithSecrets: foundUsers});
+                res.render("secrets", { usersWithSecrets: foundUsers });
             }
         }
     });
 });
 
-app.get("/submit", function(req,res){
+app.get("/submit", function (req, res) {
     if (req.isAuthenticated()) {
         res.render("submit");
     } else {
@@ -112,15 +112,15 @@ app.get("/submit", function(req,res){
     }
 });
 
-app.post("/submit", function(req,res){
+app.post("/submit", function (req, res) {
     const submittedSecret = req.body.secret;
-    User.findById(req.user._id, function(err, foundUser){
-        if (err){
+    User.findById(req.user._id, function (err, foundUser) {
+        if (err) {
             console.log(err);
         } else {
-            if (foundUser){
+            if (foundUser) {
                 foundUser.secret = submittedSecret;
-                foundUser.save(function(){
+                foundUser.save(function () {
                     res.redirect("/secrets");
                 });
             }
@@ -211,6 +211,6 @@ app.post("/login", passport.authenticate("local"), function (req, res) {
 
 
 
-app.listen(3000, function () {
-    console.log("server started on port 3000.");
+app.listen(process.env.PORT || 3000, function () {
+    console.log("Server is running on port 3000.");
 });
