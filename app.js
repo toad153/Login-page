@@ -28,7 +28,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb+srv://admin-adwait:admin1234@cluster0.5wvwwig.mongodb.net/userDB", { useNewUrlParser: true });
+var password = process.env.MONGO_ID;
+
+mongoose.connect("mongodb+srv://admin-adwait:"+ password +"@cluster0.5wvwwig.mongodb.net/userDB", { useNewUrlParser: true });
 // mongoose.connect("mongodb://localhost:27017/userDB", { useNewUrlParser: true });
 
 
